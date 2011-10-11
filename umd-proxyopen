@@ -1,0 +1,21 @@
+#!/bin/sh
+# Convenience script to open URLs via the UMD Researchport proxy. Set your URL
+# handler below.
+#
+# Author: Tim Creech <tcreech@umd.edu>
+
+URLHANDLER="open"
+
+if test $# -lt 1; then
+   echo "USAGE: $0 [URL]"
+   exit 1
+fi
+
+if ! echo "$1" | grep '://' > /dev/null; then
+   echo "ERROR: The URL must include a protocol. (Maybe 'http://'?)"
+   exit 1
+fi
+
+URL=`echo "$1" | perl -pe 's|://(.*?)/(.*)|://\1.proxy-um.researchport.umd.edu/\2|'`
+
+$URLHANDLER "$URL"
